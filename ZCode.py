@@ -1,27 +1,30 @@
 import tkinter as tk
-import subprocess
+import sys
 
-def run_code():
-    code = code_text.get("1.0", tk.END)
-    process = subprocess.Popen(["python", "-c", code], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    output, error = process.communicate()
-    
-    if output:
-        print(output.decode("utf-8"))
-    if error:
-        print(error.decode("utf-8"))
+root = tk.Tk()
+root.title("ZCODE EDITOR")
 
-# Create the main window
-window = tk.Tk()
-window.title("Code Editor")
+def runCode(code):
+    outputWin = tk.Toplevel()
+    outputWin.title("ZCODE OUTPUT")
 
-# Create the text area for code input
-code_text = tk.Text(window, width=50, height=10)
-code_text.pack()
+    print("Ran Code")
+    try:
+        exec(code)
+    except Exception as e:
+        print("An error occurred:", e)
 
-# Create the "Run" button
-run_button = tk.Button(window, text="Run", command=run_code)
-run_button.pack()
+    outputWin.mainloop()
 
-# Start the tkinter event loop
-window.mainloop()
+def enter():
+    runCode("hi")
+
+
+codeBox = tk.Text(root, height=4, width=40)  # Create a Text widget
+codeBox.pack(fill=tk.BOTH, expand=True)
+
+runBtn = tk.Button(root, text="Run Code",width="100",command=enter)  
+runBtn.pack()
+
+
+root.mainloop()
